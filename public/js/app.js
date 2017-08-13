@@ -1,0 +1,1 @@
+angular.module('pocketApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'MainService']);
