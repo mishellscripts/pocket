@@ -1,12 +1,13 @@
 .container(ng-show='weekView', ng-controller='WeekCtrl')
   #week-header.row.text-center
-    .arrow.arrow-left.col-md-1(ng-click="decWeek();drawWeek();")
+    .arrow.arrow-left.col-md-1(ng-if="$parent.dayStart > 1" ng-click="decWeek();")
+    .arrow.arrow-left.disabled.col-md-1(style="border-right: 20px solid #E8E8E8" ng-if="$parent.dayStart == 1")
     .col-md-10
       .arrow.arrow-up(ng-click='$parent.switchMonthView()')
       h1#week-start.title.text-center {{dayStart}}
       h1#week.title.text-center {{month}}
       h1#week-end.title.text-center {{dayEnd}}
-    .arrow.arrow-right.col-md-1(ng-click="incWeek();drawWeek();")
+    .arrow.arrow-right.col-md-1(ng-if="$parent.dayEnd < $parent.daysInMonth" ng-click="incWeek();")
+    .arrow.arrow-right.disabled.col-md-1(style="border-left: 20px solid #E8E8E8" ng-if="$parent.dayEnd == $parent.daysInMonth")
   .row
-    button#day-switch-button(type='button') Switch to day view
     table#week-timetable(ng-show='drawWeek()')

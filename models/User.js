@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const userSchema = new mongoose.Schema({
 	email: {type: String, unique: true},
   password: String,
-  lightTheme: true
+  lightTheme: {type: Boolean, default: true}
 });
 
 /**

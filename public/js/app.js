@@ -16,6 +16,7 @@ app.controller('PocketCtrl', ['$scope', $scope=>{
   $scope.date = new Date();
   $scope.monthNames = ["January", "February", "March", "April", "May", "June", 
       "July", "August", "September", "October", "November", "December"];
+  $scope.daysInMonth = new Date($scope.date.getFullYear(), $scope.date.getMonth()+1, 0).getDate();    
 
   /**
    * Updates the current week timetable depending on the current date
@@ -24,19 +25,19 @@ app.controller('PocketCtrl', ['$scope', $scope=>{
     // Update the date variable in parent controller
     var switchDate = new Date(date);
     $scope.date = switchDate;
+    $scope.daysInMonth = new Date($scope.date.getFullYear(), $scope.date.getMonth()+1, 0).getDate();
 
     // Update the day start and day end parent variables
     $scope.dayStart = switchDate.getDate();
-    var daysInMonth = new Date($scope.date.getFullYear(), $scope.date.getMonth()+1, 0).getDate();
     if ($scope.date.getUTCDay() == 0 && $scope.date.getDate == 1) {
        $scope.dayStart = 1;
        $scope.dayEnd = $scope.dayStart + 7;
-    } else if ($scope.date.getUTCDay() == 1 && $scope.date.getDate() == daysInMonth) {
-       $scope.dayEnd = daysInMonth;
+    } else if ($scope.date.getUTCDay() == 1 && $scope.date.getDate() ==  $scope.daysInMonth) {
+       $scope.dayEnd =  $scope.daysInMonth;
        $scope.dayStart = $scope.dayEnd - 7;       
     } else {
       $scope.dayEnd = $scope.dayStart + (7-$scope.date.getUTCDay());
-      if ($scope.dayEnd+1 >= daysInMonth) $scope.dayEnd = daysInMonth;
+      if ($scope.dayEnd+1 >=  $scope.daysInMonth) $scope.dayEnd =  $scope.daysInMonth;
       if ($scope.dayStart == 2) $scope.dayStart = 1;
     }
     
