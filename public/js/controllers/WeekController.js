@@ -1,5 +1,4 @@
 app.controller('WeekCtrl', ['$scope', '$compile', ($scope, $compile)=>{
-  $scope.month = $scope.monthNames[$scope.date.getMonth()];
    
   /**
    * Updates to the next calendar week
@@ -32,18 +31,17 @@ app.controller('WeekCtrl', ['$scope', '$compile', ($scope, $compile)=>{
 
     // Append header
     var header = "<tr><th></th>";
-    console.log($scope.dayStart);
-    console.log($scope.dayEnd);
-    console.log($scope.date.getUTCDay());
+    //console.log($scope.dayStart);
+    //console.log($scope.dayEnd);
+    //console.log($scope.date.getUTCDay());
 
-    var daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
     var dateStart = $scope.dayStart;
     var dowStart = $scope.date.getUTCDay()-1;
     if (dowStart == -1) dowStart = 6;
     
     for (var d = 0; d < 7; d++) {
-      header += "<th><span>" + daysOfWeek[d];
-      if ($scope.dayStart > 1 || d >= dowStart) {
+      header += "<th><span>" + $scope.daysOfWeek[d];
+      if (($scope.dayStart > 1 || d >= dowStart) && dateStart <= $scope.daysInMonth) {
         header += " (" + dateStart + ")";
         dateStart++;
       }
@@ -58,15 +56,24 @@ app.controller('WeekCtrl', ['$scope', '$compile', ($scope, $compile)=>{
       var tr = document.createElement('tr');
       for (var t = 0; t < 8; t++) {
         var td = document.createElement('td');
+        var text = document.createTextNode(times[i]);
         if (t == 0) {
-          td.appendChild(document.createTextNode(times[i]));
-        }        
-        // Each column, when clicked, will navigate to its corresponding week view
-        $(td).attr("ng-click", "$parent.switchDayView('" + new Date().toDateString() + "')");
-        // Compile the table entry's html to allow ng-click   
-        var compiledtd = $compile(td)($scope);
-        tr.appendChild(td);
+          td.appendChild(text);
+          tr.appendChild(td);
+        } else {
+          // Each column, when clicked, will navigate to its corresponding day view
+          var index = t+1;
+          var header = $("#week-timetable th:nth-child(" + index + ")").children().first().html();
+          //console.log(header);
+
+          $(td).attr("ng-click", "$parent.switchDayView('" + parseInt(header.replace(/\D/g,'')) + "')");
+          // Compile the table entry's html to allow ng-click   
+          
+          var compiledtd = $compile(td)($scope);
+          $(tr).append(compiledtd);
+          //tr.appendChild(compiledtd);
         }
+      }
         $('#week-timetable').append(tr);
       }
     return true;

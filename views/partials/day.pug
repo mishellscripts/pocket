@@ -1,8 +1,8 @@
-.container(ng-show='dayView')
+.container(ng-show='dayView' ng-controller='DayCtrl')
   #day-header.row.text-center
     .arrow.arrow-left.col-md-1
     .col-md-10
-      .arrow.arrow-up
+      .arrow.arrow-up(ng-click="switchWeekView($parent.date)")
       h1#day-number.title.text-center {{day}}
       h1#day.title.text-center {{month}}
       h1#day-of-week.title.text-center {{dow}}

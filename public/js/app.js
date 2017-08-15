@@ -13,9 +13,13 @@ app.controller('PocketCtrl', ['$scope', $scope=>{
    */
   $scope.dayStart = 0;
   $scope.dayEnd = 0;
+  $scope.day = 0;
+  $scope.dow = 0;
   $scope.date = new Date();
   $scope.monthNames = ["January", "February", "March", "April", "May", "June", 
       "July", "August", "September", "October", "November", "December"];
+  $scope.month = $scope.monthNames[$scope.date.getMonth()];
+  $scope.daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];    
   $scope.daysInMonth = new Date($scope.date.getFullYear(), $scope.date.getMonth()+1, 0).getDate();    
 
   /**
@@ -23,7 +27,10 @@ app.controller('PocketCtrl', ['$scope', $scope=>{
    */
   $scope.switchWeekView = (date)=> {
     // Update the date variable in parent controller
-    var switchDate = new Date(date);
+    var switchDate = date;
+    if (typeof date == 'string') {
+      switchDate = new Date(date);
+    }
     $scope.date = switchDate;
     $scope.daysInMonth = new Date($scope.date.getFullYear(), $scope.date.getMonth()+1, 0).getDate();
 
@@ -56,8 +63,22 @@ app.controller('PocketCtrl', ['$scope', $scope=>{
     $scope.dayView = false;    
   }
 
-  //$scope.day = 5;
-  //$scope.dow = "(SAT)"; 
+  /**
+   * Switches to day view by updating parent boolean variables
+   */
+  $scope.switchDayView = (day)=> {
+    var switchDate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), day);
+    $scope.date = switchDate;
+    $scope.day = $scope.date.getDate();
+    var dayIndex = $scope.date.getUTCDay()-1
+    if (dayIndex == -1) dayIndex = 6;
+    $scope.dow = "(" + $scope.daysOfWeek[dayIndex] + ")";
+    $scope.month = $scope.monthNames[$scope.date.getMonth()];
+
+    $scope.monthView = false;
+    $scope.weekView = false;
+    $scope.dayView = true;    
+  }
 }]);
 
 
