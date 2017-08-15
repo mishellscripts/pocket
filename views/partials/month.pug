@@ -1,0 +1,8 @@
+.container(ng-show='monthView' ng-controller='CalendarCtrl' ng-init="updateTitle()")
+  #month-header.row
+    .arrow.arrow-left.col-md-1(ng-click="decMonth();")
+    .col-md-10
+      h1#month.title.text-center {{title}}
+    .arrow.arrow-right.col-md-1(ng-click="incMonth();")
+  .row
+    table#calendar(ng-init="drawCalendar()")
